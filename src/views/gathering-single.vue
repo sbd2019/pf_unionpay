@@ -31,7 +31,7 @@
           <van-col span="6" v-if='item.payAmount'>付款单</van-col>
           <van-col span="6">{{item.payAmount}}</van-col>
           <van-col span="6">
-            <button class='single-btn'>抢单</button>
+            <button class='single-btn' @click='grabSingle(item)'>抢单</button>
           </van-col>
         </van-row>
       </div>
@@ -91,7 +91,17 @@ export default class Gathering extends Vue {
     this.pageNum++;
     this.getSingleList();
   }
-  created() {
+  grabSingle (obj:any) {
+    console.log(obj)
+    this.$post(`member/memberInfo/grapRechargeOrder`, {
+      rechargeOrderId: obj.rechargeOrderId
+    }, {from: true}).then((res:any) => {
+      if (res.data.data.code == 0) {
+        window.location.href = res.data.data.payurl
+      }
+    })
+  }
+  mounted() {
     this.getSingleList();  
     this.$post(`member/account/getAccountInfo`, {}).then((res:any) => {
           this.balance = res.data.data.availableMoney;
@@ -109,7 +119,7 @@ export default class Gathering extends Vue {
     }
     .announcement {
       background: url('../assets/commonPic/广告框.png') no-repeat;
-      background-size: 100% 100%;
+      background-size: 100% 110%;
       position: absolute;
       left: calc(50% - 11rem);
       top: 11%;
@@ -187,7 +197,7 @@ export default class Gathering extends Vue {
     }
     .singleList-footer {
       text-align: center;
-      margin-top: 1vh;
+      // margin-top: 1vh;
     }
   }
   @media screen and (max-width: 390px) and (max-height: 740px){
@@ -197,18 +207,18 @@ export default class Gathering extends Vue {
         top: 14%;
         width: 20rem;
          p {
-          width:17rem;
+          width:70vw;
         }
       }
       .recipt-single-footer-btn {
         top: 85%;
       }
     }
-    .singleList {
+    .GrabSingle .singleList {
         width: 18rem;
         height: 18rem;
         left: calc(50% - 9rem);
-        top: 38%;
+        top: 38% ;
         .singleList-body {
           width: 100%;
           height: 68%;
@@ -237,12 +247,12 @@ export default class Gathering extends Vue {
   @media screen and (max-width: 320px) {
     .GrabSingle {
       .recipt-single-footer-btn {
-        top: 92%;
+        top: 92% !important;
       }
     }
     .singleList {
-      height: 16rem;
-      top: 42%
+      height: 16rem !important;
+      top: 42% !important;
     }
   }
 </style>

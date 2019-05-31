@@ -121,7 +121,7 @@ export default class UserInfo extends Vue {
                 line-height:6vh;
                 .van-col:first-child {
                     text-align:right;
-                    font-size:3vh;
+                    font-size:2.5vh;
                 }
                 .van-col {
                     height: 6vh;

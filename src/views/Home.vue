@@ -1,6 +1,6 @@
 <template>
   <div>
-    <publicHeader/>
+    <publicHeader title=''/>
     <!-- 公告 -->
      <router-view></router-view>
      <keep-alive>

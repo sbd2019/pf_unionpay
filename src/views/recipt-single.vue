@@ -112,7 +112,8 @@ export default class reciptSingle extends Vue {
           pageNumber: 1,
           pageSize: 1
         }, {from: true}).then((res:any) => {
-          if (res.data.data.rows[0].status == 1) {
+          console.log(res.data.data.rows[0].status)
+          if (res.data.data.rows[0].status == 0) {
             clearInterval(this.time);
             this.$toast('抢单成功')
             setTimeout(() => {
@@ -132,7 +133,6 @@ export default class reciptSingle extends Vue {
     }, 1000)
     try {
         let data = this.Single(1);
-        console.log(data);
     } catch (error) {
         this.countDown = 60; // 重置倒计时
         this.actionSingleShow = false;
@@ -143,7 +143,6 @@ export default class reciptSingle extends Vue {
     clearInterval(this.time);
     this.Single(0);
     this.countDown = 0;
-    console.log(this.time)
   }
   Single(status: number) {
     return this.$post(`member/memberInfo/updateMember`, {
@@ -167,8 +166,9 @@ export default class reciptSingle extends Vue {
       text-align:center;
     }
     .announcement {
+      overflow-y: auto;
       background: url('../assets/commonPic/广告框.png') no-repeat;
-      background-size: 100% 100%;
+      background-size: 100% 110%;
       position: absolute;
       left: calc(50% - 11rem);
       top: 11%;
@@ -257,7 +257,7 @@ export default class reciptSingle extends Vue {
         top: 15%;
         width: 20rem;
          p {
-          width:17rem;
+          width:70vw;
         }
       }
       .recipt-single-footer-btn {
@@ -267,11 +267,11 @@ export default class reciptSingle extends Vue {
         }
       }
     }
-    .singleList {
-        width: 18rem;
-        height: 18rem;
-        left: calc(50% - 9rem);
-        top: 49%;
+    .reciptSingle .singleList {
+        width: 80vw;
+        height: 45vh;
+        left: calc(50% - 40vw);
+        top: 49% !important;
         .singleList-body {
           width: 100%;
           height: 68%;

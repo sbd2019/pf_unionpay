@@ -24,7 +24,7 @@ export const router = new Router({
           name: 'grab-single',
           meta: {
             title: '抢单',
-            type: 'app'
+            // type: 'app'
           },
           component: () => import(/* webpackChunkName: "about" */ './views/grab-single.vue')
         },

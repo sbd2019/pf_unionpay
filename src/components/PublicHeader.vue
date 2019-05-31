@@ -2,7 +2,7 @@
   <div class="public-header">
         <van-row type="flex" justify="space-around" >
         <van-col span="24">
-            <span>{{$route.meta.title}}</span>
+            <span>{{$route.meta.title || ''}}</span>
         </van-col>
         </van-row>
     </div>
@@ -13,7 +13,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class PublicHeader extends Vue {
-  @Prop() private title: string = '';
+  @Prop() private title?: string = '';
 }
 </script>
 
