@@ -131,9 +131,9 @@ export default class Login extends Vue {
       } else if (!(/^[1][3,4,5,7,8][0-9]{9}$/.test(this.loginData.phone))) {
         this.$toast('该手机号码格式有误，请重新输入');
         return
-      } else if (!(/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]{6,16}$/.test(this.loginData.password))) {
-        this.$toast('密码格式有误，请输入6~16位数字和字母');
-        return
+      // } else if (!(/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]{6,16}$/.test(this.loginData.password))) {
+      //   this.$toast('密码格式有误，请输入6~16位数字和字母');
+      //   return
       } else {
         this.$post('member/login/checkVerify', {
           mobile: this.loginData.phone,
@@ -141,9 +141,10 @@ export default class Login extends Vue {
           code: this.loginData.verify
         }, {from: true}).then((res:any) => {
           if(res.data.code == 0) {
-            this.$cookies.set('userId', CryptoJS.MD5(this.loginData.moblie).toString(), 60 * 60 * 24 * 3) // 存储手机号3天 3天内有效
+            this.$cookies.set('userId', this.loginData.moblie, 60 * 60 * 24 * 3) // 存储手机号3天 3天内有效
             this.$toast(res.data.msg);
             this.$router.push('/')
+            console.log(this.$cookies.get('userId'))
           } else {
             this.$toast(res.data.msg);
             this.getPic();
