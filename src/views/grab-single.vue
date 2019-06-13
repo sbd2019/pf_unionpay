@@ -16,12 +16,12 @@
     <div class="single-sum">
       <van-row type="flex" justify="space-around" >
         <van-col span="20">
-          当前余额：<span>{{balance}}</span>元
+          当前余额：<span>{{balance / 100}}</span>元
         </van-col>
       </van-row>
       <van-row type="flex" justify="space-around" >
         <van-col span="20">
-          总收益：<span>{{sum}}</span>元
+          总收益：<span>{{sum / 100}}</span>元
         </van-col>
       </van-row>
     </div>
@@ -63,14 +63,13 @@ import { Component, Vue } from 'vue-property-decorator'
   // }
 })
 export default class GrabSingle extends Vue {
-    private balance:number = 9999 // 余额
-    private sum:number = 9999 // 收益
+    private balance:number = 0 // 余额
+    private sum:number = 0 // 收益
     private time:any = ''//定时器
     private AnnouncementsStr:string = ''
     getAnnouncementContent () {
       this.$post(`member/notice/queryNotice`, {}).then((res:any) => {
         this.AnnouncementsStr = res.data.data.rows;
-        console.log(this.AnnouncementsStr)
       })
     }
     getUserMoneyInfo () {

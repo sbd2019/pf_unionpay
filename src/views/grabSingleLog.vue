@@ -35,7 +35,7 @@
             <span v-else-if='item.payType == "wxwap"'>微信扫码</span>
           </van-col>
           <van-col span="4" >
-            {{item.payAmount}}
+            {{item.payAmount / 100}}
           </van-col>
           <van-col span="4" >
             <van-button type="default" class="log-btn" v-if='item.status == 0' @click="confirm(item)">确认收款</van-button>

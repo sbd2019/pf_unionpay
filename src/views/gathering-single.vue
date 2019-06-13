@@ -29,7 +29,7 @@
           <!-- <van-col span="6" v-if='item.payType == "zfbwap"'>支付宝扫码</van-col>
           <van-col span="6" v-else-if='item.payType == "wxwap"'>微信扫码</van-col> -->
           <van-col span="6" v-if='item.payAmount'>付款单</van-col>
-          <van-col span="6">{{item.payAmount}}</van-col>
+          <van-col span="6">{{item.payAmount / 100}}</van-col>
           <van-col span="6">
             <button class='single-btn' @click='grabSingle(item)'>抢单</button>
           </van-col>
@@ -50,7 +50,7 @@
         </van-col> -->
         <van-col span="14">
           <div @click='getSingleList(true)'>
-            <span>当前余额：{{balance}}</span>
+            <span>当前余额：{{balance / 100}}</span>
             刷新
           </div>
         </van-col>
@@ -98,6 +98,8 @@ export default class Gathering extends Vue {
     }, {from: true}).then((res:any) => {
       if (res.data.data.code == 0) {
         window.location.href = res.data.data.payurl
+      } else {
+        this.$toast('抢单失败')
       }
     })
   }

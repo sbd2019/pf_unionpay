@@ -1,6 +1,6 @@
 <template>
   <div class="cardInfo">
-    <div class='content'>
+    <div class='content' v-clock>
         <van-row type="flex"  >
             <van-col span="8">
                 开户行名称：
@@ -41,7 +41,7 @@
                 <van-field placeholder="请输入开户人姓名" v-model='reuqestData.accountName'/>
             </van-col>
         </van-row>
-        <van-row type="flex" justify="space-around" >
+        <van-row type="flex" justify="space-around" v-if="!cardStatus.length > 0">
             <van-col span="6" >
                 <button class='cardInfo-footer-btn' @click='save'>保存</button>
             </van-col>
@@ -61,11 +61,23 @@ export default class CardInfo extends Vue {
         // detailId: '',
         // payPasswd: ''
     }
+    private cardStatus: any[] = []
     beforeCreate() {
         this.$post(`member/detail/queryMemberDetail`).then((res:any) => {
             (res.data.code != 0 || !res.data.data.payPasswd) && this.$toast('请先设置支付密码');
             (res.data.code != 0 || !res.data.data.payPasswd) && this.$router.push('/account/user-info');
         })
+    }
+    mounted() {
+      this.getCardInfo()
+    }
+    getCardInfo () {
+        this.$post(`member/bank/bankList`, {}, {form: true}).then((res: any) => {
+            if (res.data.code == 0) {
+                this.reuqestData = res.data.data.rows[0]
+                this.cardStatus = res.data.data.rows
+            }
+        })   
     }
     save () {
         if (!(this.reuqestData.bankName && this.reuqestData.branchBankName && this.reuqestData.accountName && this.reuqestData.bankNo)) {
@@ -89,12 +101,13 @@ export default class CardInfo extends Vue {
                 this.$post(`member/bank/addBankInfo`, this.reuqestData, {from: true}).then((res:any) => {
                     if (res.data.code == 0) {
                         this.$toast('保存成功'), 
-                        this.reuqestData = {
-                            bankName: '',
-                            branchBankName: '',
-                            accountName: '',
-                            bankNo: ''
-                        }
+                        this.getCardInfo()
+                        // this.reuqestData = {
+                        //     bankName: '',
+                        //     branchBankName: '',
+                        //     accountName: '',
+                        //     bankNo: ''
+                        // }
                     }
                 })
             }

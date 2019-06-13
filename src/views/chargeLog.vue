@@ -22,7 +22,7 @@
             {{item.createTimeStr}}
           </van-col>
           <van-col span="8" >
-            {{item.payAmount}}
+            {{item.payAmount / 100}}
           </van-col>
           <van-col span="8" >
             <span v-if='item.status == 0'>支付中</span>

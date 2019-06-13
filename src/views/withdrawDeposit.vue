@@ -6,7 +6,7 @@
                 账户余额：
             </van-col>
             <van-col span="14" v-cloak>
-                {{accountBalance}}
+                {{accountBalance / 100}}
             </van-col>
         </van-row>
         <van-row type="flex"  >
@@ -14,7 +14,7 @@
                 可提现金额：
             </van-col>
             <van-col span="14" v-cloak>
-               {{withdrawDepositSum}}
+               {{withdrawDepositSum / 100}}
             </van-col>
         </van-row>
         <van-row type="flex"  >
@@ -22,7 +22,9 @@
                 提现银行卡：
             </van-col>
             <van-col span="14">
-                <van-field placeholder="请输入银行卡号" v-model='reuqestData.bankId'/>
+                <!-- <van-field placeholder="请输入银行卡号" v-model='reuqestData.bankId'/> -->
+                 <select id='bankId' v-html="bankStr">
+                </select>
             </van-col>
         </van-row>
         <van-row type="flex"  >
@@ -30,7 +32,7 @@
                 提现金额：
             </van-col>
             <van-col span="14">
-                <van-field placeholder="请输入提现金额" v-model='reuqestData.money'/>
+                <van-field placeholder="请输入提现金额" v-model='reuqestData.money' @input='getQueryMoney'/>
             </van-col>
         </van-row>
         <van-row type="flex"  >
@@ -46,7 +48,7 @@
                 手续费：
             </van-col>
             <van-col span="14" v-cloak>
-                {{serveChaege}}
+                {{serveChaege.toFixed(3)}}
             </van-col>
         </van-row>
         <van-row type="flex" justify="space-around" >
@@ -65,6 +67,7 @@ export default class withdrawDeposit extends Vue {
     private accountBalance:number = 0
     private withdrawDepositSum:number = 0
     private serveChaege:number = 0
+    private bankStr: string = ''
     private reuqestData:any = {
         bankId: '',
         money: '',
@@ -80,41 +83,52 @@ export default class withdrawDeposit extends Vue {
             res.data.data.rows.length <=0 && this.$router.push('/account/card-info')
         })
     }
-    created() {
-        this.$post(`member/withdraw/queryWithdrawFee`).then((res:any) => {
-            res.data.code == 0 && (this.serveChaege = res.data.data.value);
-        })
+    mounted() {
         this.$post(`member/account/getAccountInfo`).then((res:any) => {
-        //   if (res.data.code == 0) {
               this.accountBalance = res.data.data.availableMoney;
               this.withdrawDepositSum = res.data.data.deposit;
-        //   }
+        })
+        this.$post(`member/bank/bankList`, {}, {form: true}).then((res: any) => {
+             res.data.data.rows.map((item:any, index:number) => {
+                this.bankStr += `<option style='color:white' value=${item.bankId}>${item.bankNo}</option>`
+            })
+        })
+    }
+    getQueryMoney () {
+        this.$post(`member/withdraw/queryWithdrawFee`).then((res:any) => {
+            if (res.data.code == 0){
+                res.data.data.valueName == 'WITHDRAW_FEE_SUM' ? this.serveChaege = res.data.data.value : this.serveChaege = this.reuqestData.money * (res.data.data.value / 100)
+                // console.log(this.serveChaege, res.data.data.value / 100)
+            }
         })
     }
     save () {
-        if (!(this.reuqestData.bankId && this.reuqestData.money && this.reuqestData.payPasswd)) {
+        if (!(this.reuqestData.money && this.reuqestData.payPasswd)) {
             this.$toast('以上所有信息为必填，请按照要求填写')
             return
         } else {
             if (!(/^\d+$/.test(this.reuqestData.money))) {
                 this.$toast('提现金额只可输入数字')
                 return
-            } else if (!(/^\d{1,19}$/.test(this.reuqestData.bankId))){
-                this.$toast('银行卡号只可输入数字且不超过19位');
-                return
             } else if (!(/^\d{6}$/.test(this.reuqestData.payPasswd))) {
                 this.$toast('支付密码请设置6位数数字');
                 return
             } else {
                 this.reuqestData.payPasswd = CryptoJS.MD5(this.reuqestData.payPasswd).toString()
+                this.reuqestData.money = this.reuqestData.money * 100
+                let bankId = document.getElementById('bankId')
+                this.reuqestData.bankId = (bankId as any).options[(bankId as any).selectedIndex].value
                 this.$post(`member/withdraw/addMemberWithdraw`, this.reuqestData, {from: true}).then((res:any) => {
                     if (res.data.code == 0) {
-                        this.$toast('保存成功'), 
-                        this.reuqestData = {
-                            bankId: '',
-                            money: '',
-                            payPasswd: '',
-                        }
+                        this.$toast('保存成功');
+                    } else {
+                        this.$toast(res.data.msg)
+                    }
+                    this.serveChaege = 0
+                    this.reuqestData = {
+                        bankId: '',
+                        money: '',
+                        payPasswd: '',
                     }
                 })
             }
@@ -124,6 +138,9 @@ export default class withdrawDeposit extends Vue {
 </script>
 <style lang="scss">
     .withdrawDeposit {
+        #bankId {
+            padding:2vw;border-radius:2vw;width:100%;background:transparent;border:none;color:white
+        }
         color:white;
         .content {
             margin-top:10%;
@@ -145,7 +162,7 @@ export default class withdrawDeposit extends Vue {
                     }
                     .van-field {
                         background: transparent;
-                        input {
+                        input{
                         display: inline-block;
                         color: white;
                         height: 6vh;

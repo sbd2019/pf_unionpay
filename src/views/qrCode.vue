@@ -9,7 +9,7 @@
                     <span v-if='item.status == "wxwap"'>微信扫码</span>
                 </van-col>
                 <van-col span="10" >
-                    金额(元):{{item.amount}}
+                    金额(元):{{item.amount / 100}}
                 </van-col>
                 <van-col span="4" >
                     <strong style='color:red' @click='() => {
@@ -133,7 +133,7 @@ export default class QrCode extends Vue {
       this.getLogList();
       this.$post(`member/sysconfig/amountList`, {from: true}).then((res:any) => {
           res.data.data.map((item:any, index:number) => {
-              this.moneyTep += `<option value=${item.qrMoneyId}>${item.amount}</option>`
+              this.moneyTep += `<option value=${item.amount}>${item.amount / 100}</option>`
           })
           console.log(this.moneyTep)
       })
@@ -170,6 +170,7 @@ export default class QrCode extends Vue {
         let payVal = document.getElementById('payType')
         let moneyVal = document.getElementById('moneyType')
         // console.log(payVal.options[payVal.selectedIndex].value, moneyVal.options[moneyVal.selectedIndex].value)
+         console.log(moneyVal)
         if (!(this.qrNum && this.qrUrl)) {
             this.$toast('以上信息皆为必填项，请按照要求填写')
         } else if (this.qrNum.length > 30) {

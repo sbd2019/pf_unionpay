@@ -38,7 +38,7 @@
                 支付密码：
             </van-col>
             <van-col span="14">
-                <van-field placeholder="请输入6位数支付密码" type='password' v-model='reuqestData.payPasswd'/>
+                <van-field placeholder="请输入6位数支付密码" type='password' v-model='reuqestData.payPasswd' clearable/>
             </van-col>
         </van-row>
         <van-row type="flex" justify="space-around" >
@@ -62,9 +62,19 @@ export default class UserInfo extends Vue {
         detailId: '',
         payPasswd: ''
     }
-    created() {
+    mounted() {
+     this.getUserInfo();   
+    }
+    getUserInfo () {
         this.$post(`member/detail/queryMemberDetail`).then((res:any) => {
-            res.data.code == 0 && (this.reuqestData.detailId = res.data.data.detailId)
+            if (res.data.code == 0) {
+                this.reuqestData.identifyNumber = res.data.data.identifyNumber
+                this.reuqestData.phoneNumber = res.data.data.phoneNumber
+                this.reuqestData.area=res.data.data.area
+                this.reuqestData.detailArea= res.data.data.detailArea
+                this.reuqestData.detailId= res.data.data.detailId
+                this.reuqestData.payPasswd= res.data.data.payPasswd
+            }
         })
     }
     save () {
@@ -92,14 +102,15 @@ export default class UserInfo extends Vue {
                 this.$post(`member/detail/saveMemberDetail`, this.reuqestData, {from: true}).then((res:any) => {
                     if (res.data.code == 0) {
                         this.$toast('保存成功'), 
-                        this.reuqestData = {
-                            identifyNumber: '',
-                            phoneNumber: '',
-                            area: '',
-                            detailArea: '',
-                            detailId: '',
-                            payPasswd: ''
-                        }
+                        this.getUserInfo();
+                        // this.reuqestData = {
+                        //     identifyNumber: '',
+                        //     phoneNumber: '',
+                        //     area: '',
+                        //     detailArea: '',
+                        //     detailId: '',
+                        //     payPasswd: ''
+                        // }
                     }
                 })
             }

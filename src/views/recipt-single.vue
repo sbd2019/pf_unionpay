@@ -29,7 +29,7 @@
         <van-row type="flex" justify="space-around" v-for="(item, index) in singleList" :key='item.payAmount + index'>
           <van-col span="6" v-if='item.payType == "zfbwap"'>支付宝扫码</van-col>
           <van-col span="6" v-else-if='item.payType == "wxwap"'>微信扫码</van-col>
-          <van-col span="6">{{item.payAmount}}</van-col>
+          <van-col span="6">{{item.payAmount / 100}}</van-col>
           <van-col span="6">{{item.totalCount}}</van-col>
         </van-row>
       </div>
@@ -43,7 +43,7 @@
     <van-row type="flex" justify="space-around" class="recipt-single-footer-btn">
         <van-col span="11">
           <div @click='actionSingle'>
-            <span>当前余额：<strong>{{balance}}</strong>元</span>
+            <span>当前余额：<strong>{{balance / 100}}</strong>元</span>
             开始抢单
           </div>
         </van-col>
