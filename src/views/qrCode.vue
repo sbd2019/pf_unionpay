@@ -202,7 +202,7 @@ export default class QrCode extends Vue {
     .qr-doede {
         color:white;
         .qr-content {
-            height: 72vh;
+            height: 62vh;
             overflow-y:auto;
         }
         .qr-data {
