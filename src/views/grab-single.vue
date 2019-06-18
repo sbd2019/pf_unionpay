@@ -158,7 +158,10 @@ export default class GrabSingle extends Vue {
       }
     }
   }
-  @media screen and (max-width: 360px){
+  @media screen and (max-width: 375px){
+        .single-sum {
+          top:38%
+        }
         .announcement {
           width: 18rem !important;
           height: 8rem !important;

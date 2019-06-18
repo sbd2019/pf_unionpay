@@ -205,7 +205,7 @@ export default class reciptSingle extends Vue {
         background-size: 100% 110%;
         position: relative;
         span {
-          font-size: 1vh;
+          font-size: 2vh;
           position: absolute;
           top: 10%;
           left: 17%;
@@ -257,7 +257,7 @@ export default class reciptSingle extends Vue {
         top: 15%;
         width: 20rem;
          p {
-          width:70vw;
+          width:64vw;
         }
       }
       .recipt-single-footer-btn {
@@ -271,7 +271,7 @@ export default class reciptSingle extends Vue {
         width: 80vw;
         height: 45vh;
         left: calc(50% - 40vw);
-        top: 49% !important;
+        top: 47% !important;
         .singleList-body {
           width: 100%;
           height: 68%;

@@ -206,14 +206,14 @@ export default class Gathering extends Vue {
     .GrabSingle {
       .announcement {
         left: calc(50% - 9.8rem);
-        top: 14%;
+        top: 13%;
         width: 20rem;
          p {
-          width:70vw;
+          width:68vw;
         }
       }
       .recipt-single-footer-btn {
-        top: 85%;
+        top: 93%;
       }
     }
     .GrabSingle .singleList {
