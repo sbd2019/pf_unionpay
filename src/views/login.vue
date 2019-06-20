@@ -205,7 +205,8 @@ export default class Login extends Vue {
 </script>
 <style lang="scss">
 .login {
-  // height: 100vh;
+  // min-height: 100vh;
+  // position: relative;
   // background: url("../assets/login&register/背景.png") no-repeat;
   // background-size: cover;
   .login-verify-pic {
@@ -356,4 +357,22 @@ export default class Login extends Vue {
     // font-family: none;
   }
 }
+@media screen and (max-height: 400px){
+        #app {
+          height: 130vh;
+        }
+        .login{
+          height: 130vh;
+          overflow-y: auto;
+          .login-content,.register-content{
+            top: 50%;
+          }
+          .login-btn {
+            top: 80%
+          }
+          .register-account {
+            top: 105%;
+          }
+        }
+    }
 </style>
