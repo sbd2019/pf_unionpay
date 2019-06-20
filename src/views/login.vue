@@ -365,13 +365,16 @@ export default class Login extends Vue {
           height: 130vh;
           overflow-y: auto;
           .login-content,.register-content{
+            .van-col {
+              height: 9vh;
+            }
             top: 50%;
           }
           .login-btn {
-            top: 80%
+            top: 98% !important;
           }
           .register-account {
-            top: 105%;
+            top: 120%;
           }
         }
     }
