@@ -357,7 +357,7 @@ export default class Login extends Vue {
     // font-family: none;
   }
 }
-@media screen and (max-height: 400px){
+@media screen and (max-height: 520px){
         #app {
           height: 130vh;
         }
